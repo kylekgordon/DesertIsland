@@ -1,0 +1,62 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "sand.tsx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "DesertIsland.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 866.3333333333333,
+                "y": 1028.3333333333333
+            }
+        },
+        "beach-desert-2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "sand.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "tmw_desert_spacing.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "wateranimate2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.imagePath": "C:/Users/KORE/Desktop/TiledGame/sprites",
+    "map.height": 60,
+    "map.lastUsedFormat": "tmx",
+    "map.width": 60,
+    "openFiles": [
+        "DesertIsland.tmx",
+        "beach-desert-2.tsx",
+        "tmw_desert_spacing.tsx",
+        "sand.tsx",
+        "wateranimate2.tsx"
+    ],
+    "project": "Desert Island.tiled-project",
+    "recentFiles": [
+        "DesertIsland.tmx",
+        "beach-desert-2.tsx",
+        "tmw_desert_spacing.tsx",
+        "wateranimate2.tsx",
+        "sand.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.margin": 0,
+    "tileset.spacing": 0,
+    "tileset.tileSize": {
+        "height": 32,
+        "width": 32
+    }
+}
