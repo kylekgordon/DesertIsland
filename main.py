@@ -11,7 +11,7 @@ def main():
     screen = pygame.display.set_mode((800, 600))
     clock = pygame.time.Clock()
     fps = 60
-
+    moveframes = 32
     pygame.display.set_caption("Desert Island")
 
     # Color library
@@ -24,6 +24,7 @@ def main():
     Level1 = load_pygame('DesertIsland.tmx')
     Level1_group = pygame.sprite.Group()
     players = pygame.image.load('sprites/pngegg.png').convert_alpha()
+    player_group = pygame.sprite.Group()
     #print(tmx_data.layers) # Print all layers
 
     direction_x = 0
@@ -96,6 +97,22 @@ def main():
     # Water2 = tmx_data.get_layer_by_name('Water2')
     # Terrain = tmx_data.get_layer_by_name('Terrain')
 
+    # screen.blit(player_1_sheet.get_player_image(player_animation_steps, action, 32, 32, 1), (400, 300))
+    
+    class Player():
+        def __init__(self, pos, image, group)-> None:
+            super().__init__(group)
+            self.image = image
+            self.rect = [32,32]
+
+        def get_image(self, frame, action, width, height, scale):
+            player_image = player_1_sheet
+            player_image.blit(self.image, (0, 0), ((frame * width), action * height, width, height))
+            player_image = pygame.transform.scale(player_image, (width * scale, height * scale))
+            return player_image
+        
+    player1 = Player((0,0), player_1_sheet, player_group)
+
     running = True  # Game loop
     while running:
 
@@ -110,22 +127,22 @@ def main():
                 elif event.key == pygame.K_LEFT:
                     action = 1
                     player_animation_steps += 1
-                    direction_x += 32
+                    direction_x += moveframes
 
                 elif event.key == pygame.K_RIGHT:
                     action = 2
                     player_animation_steps += 1
-                    direction_x -= 32
+                    direction_x -= moveframes
 
                 elif event.key == pygame.K_UP:
                     action = 3
                     player_animation_steps += 1
-                    direction_y += 32
+                    direction_y += moveframes
 
                 elif event.key == pygame.K_DOWN:
                     action = 0
                     player_animation_steps += 1
-                    direction_y -= 32
+                    direction_y -= moveframes
             
 
         screen.fill(black)    
@@ -141,11 +158,13 @@ def main():
         # if player_frame == len(player_animation[action]):
         #     player_frame = 0
 
-        screen.blit(player_1_sheet.get_player_image(player_animation_steps, action, 32, 32, 1), (400, 300))
+        # screen.blit(player_1_sheet.get_player_image(player_animation_steps, action, 32, 32, 1), (400, 300))
 
+        player1.get_image(player_animation_steps, action, 32, 32, 1) 
 
-        if player_animation_steps == 3:
-            player_animation_steps = 0
+        # if player_animation_steps == 3:
+        #     player_animation_steps = 0
+        Level1_group.draw(screen)
         
         pygame.display.update()
         
