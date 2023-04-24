@@ -3,21 +3,21 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "sand.tsx",
+    "activeFile": "DesertIsland.tmx",
     "expandedProjectPaths": [
         "."
     ],
     "fileStates": {
         "DesertIsland.tmx": {
             "scale": 1.5,
-            "selectedLayer": 2,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 866.3333333333333,
-                "y": 1028.3333333333333
+                "x": 235.66666666666666,
+                "y": 972.3333333333333
             }
         },
         "beach-desert-2.tsx": {
-            "scaleInDock": 1,
+            "scaleInDock": 3,
             "scaleInEditor": 1
         },
         "sand.tsx": {
@@ -25,11 +25,11 @@
             "scaleInEditor": 1
         },
         "tmw_desert_spacing.tsx": {
-            "scaleInDock": 1,
+            "scaleInDock": 3,
             "scaleInEditor": 1
         },
         "wateranimate2.tsx": {
-            "scaleInDock": 1,
+            "scaleInDock": 3,
             "scaleInEditor": 1
         }
     },
@@ -46,11 +46,11 @@
     ],
     "project": "Desert Island.tiled-project",
     "recentFiles": [
-        "DesertIsland.tmx",
-        "beach-desert-2.tsx",
-        "tmw_desert_spacing.tsx",
         "wateranimate2.tsx",
-        "sand.tsx"
+        "sand.tsx",
+        "tmw_desert_spacing.tsx",
+        "beach-desert-2.tsx",
+        "DesertIsland.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.margin": 0,
