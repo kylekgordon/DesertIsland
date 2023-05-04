@@ -36,6 +36,17 @@ class TiledMap:
                     image = tileset.get_tile_image_by_gid(gid)
                     if image:
                         surface.blit(image, (x * self.tmx_data.tilewidth, y * self.tmx_data.tileheight))
+
+    def render_layers(self, surface, layers):
+        """Render specific layers of the Tiled map to a Pygame surface."""
+        for layer in self.layers:
+            if layer.name in layers:
+                for x, y, gid in layer:
+                    tileset = self.tmx_data.get_tileset_by_gid(gid)
+                    if tileset:
+                        image = tileset.get_tile_image_by_gid(gid)
+                        if image:
+                            surface.blit(image, (x * self.tmx_data.tilewidth, y * self.tmx_data.tileheight))
     
     def collides_with(self, rect):
         """Check if a rectangle collides with any of the collision rects in the map."""

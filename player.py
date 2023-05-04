@@ -14,6 +14,8 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.health = 100
+        self.points = 0
         
         # Set up animation variables
         self.animation_timer = 0

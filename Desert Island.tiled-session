@@ -10,10 +10,10 @@
     "fileStates": {
         "DesertIsland.tmx": {
             "scale": 1.5,
-            "selectedLayer": 4,
+            "selectedLayer": 5,
             "viewCenter": {
-                "x": 235.66666666666666,
-                "y": 972.3333333333333
+                "x": 861.6666666666666,
+                "y": 249.66666666666663
             }
         },
         "beach-desert-2.tsx": {
