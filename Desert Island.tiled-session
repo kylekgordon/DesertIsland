@@ -7,13 +7,25 @@
     "expandedProjectPaths": [
         "."
     ],
+    "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "D:/Robotic-Game-main/Robotic-Game-main/data/..tiled/body.tmx": {
+            "scale": 0.79970703125,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 510.8120649651972,
+                "y": 510.8120649651972
+            }
+        },
+        "D:/Robotic-Game-main/Robotic-Game-main/data/..tiled/world tileset16x16.tsx": {
+            "scaleInDock": 1
+        },
         "DesertIsland.tmx": {
             "scale": 1.5,
-            "selectedLayer": 5,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 861.6666666666666,
-                "y": 249.66666666666663
+                "x": 960,
+                "y": 959.6666666666665
             }
         },
         "beach-desert-2.tsx": {
@@ -42,10 +54,12 @@
         "beach-desert-2.tsx",
         "tmw_desert_spacing.tsx",
         "sand.tsx",
-        "wateranimate2.tsx"
+        "wateranimate2.tsx",
+        "D:/Robotic-Game-main/Robotic-Game-main/data/..tiled/body.tmx"
     ],
     "project": "Desert Island.tiled-project",
     "recentFiles": [
+        "D:/Robotic-Game-main/Robotic-Game-main/data/..tiled/body.tmx",
         "wateranimate2.tsx",
         "sand.tsx",
         "tmw_desert_spacing.tsx",

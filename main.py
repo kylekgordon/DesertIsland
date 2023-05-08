@@ -1,6 +1,8 @@
 import pygame
 import sys
 import spritesheet
+import pytmx
+import random
 
 from pytmx.util_pygame import load_pygame
 from player import Player
@@ -40,20 +42,20 @@ def main():
     Level1 = load_pygame('DesertIsland.tmx')
     Level1_group = pygame.sprite.Group()
 
-    sprite_sheet_path = "sprites/Player3.png"
+    sprite_sheet_path = f'sprites/Player{random.randrange(1, 7, 1)}.png'
     sprite_width = 32
     sprite_height = 32
     x = 400
-    y = 100
+    y = 300
 
     player = Player(sprite_sheet_path, sprite_width, sprite_height, x, y)
 
-    players = pygame.image.load('sprites/Player1.png').convert_alpha()
+    players = pygame.image.load(f'sprites/Player{random.randrange(1, 7, 1)}.png').convert_alpha()
     player_group = pygame.sprite.Group()
     #print(tmx_data.layers) # Print all layers
 
     # Get tiles for all layers
-    maps = TiledMap('DesertIsland.tmx')
+    # maps = TiledMap('DesertIsland.tmx')
 
     health = player.health
     points = player.points
@@ -78,8 +80,35 @@ def main():
     Water2 = Level1.get_layer_by_name('Water2')
     # Terrain = tmx_data.get_layer_by_name('Terrain')
     # Landscape = tmx_data.get_layer_by_name('Landscape')
+    # print(Water2.offsetx)
 
+    map = TiledMap('DesertIsland.tmx')
 
+    collisions = []
+    # for layer in Level1.get_layer_by_name('Water2'):
+    for x, y, surf in Water2.tiles():
+        # tile_properties = layer.get_tile_properties_by_gid(gid)
+        # rect = pygame.Rect(x * Water2.width, y * Water2.height,
+        #                         Water2.width, Water2.height)
+        # print(rect)
+        # pygame.draw.rect(surf, (255, 0, 0), rect)
+
+        #This is all wrong
+        print(Water2.properties)
+        # collisions.append(pygame.Rect(x * Water2.tilewidth, y * Water2.tileheight,
+                            #    Water2.tilewidth, Water2.tileheight))
+
+    # blockers = []
+    # tilewidth = tile_renderer.tmx_data.tilewidth
+    # for tile_object in tile_renderer.tmx_data.getObjects():
+    #     properties = tile_object.__dict__
+    #     if properties['name'] == 'Water2':
+    #         x = properties['x'] 
+    #         y = properties['y']
+    #         width = properties['width']
+    #         height = properties['height']
+    #         new_rect = pg.Rect(x, y, width, height)
+    #         blockers.append(new_rect)
         
     all_sprites = pygame.sprite.Group()
     all_sprites.add(player)
@@ -104,7 +133,32 @@ def main():
         screen.fill(black)    
         # blit_all_layers(screen, Level1, (direction_x, direction_y), (-600,0))
 
+        # map.render(screen)
+
+        for collision_rect in collisions:
+            # if player.rect.top > collision_rect.bottom:
+            #     player.rect.y += 10
+            print(collision_rect.left)
+            rectangle1 = pygame.Rect(10, 30, 50, 70)
+            pygame.draw.rect(screen, red, collision_rect)
+
+
         current_time = pygame.time.get_ticks()
+
+        # Check for collisions with the collision layer
+        # for collision_object in Water2:
+        #     if collision_object.collides_with(player):
+        #         print("Collision")
+        #         # Handle collision, e.g. prevent the player from moving through the object
+        #         if player.rect.left < collision_object.rect.right and player.rect.right > collision_object.rect.right:
+        #             player.rect.right = collision_object.rect.left
+        #         if player.rect.right > collision_object.rect.left and player.rect.left < collision_object.rect.left:
+        #             player.rect.left = collision_object.rect.right
+        #         if player.rect.top < collision_object.rect.bottom and player.rect.bottom > collision_object.rect.bottom:
+        #             player.rect.bottom = collision_object.rect.top
+        #         if player.rect.bottom > collision_object.rect.top and player.rect.top < collision_object.rect.top:
+        #             player.rect.top = collision_object.rect.bottom
+
 
         # Keep player within screen limits
         if player.rect.y < 150: 
@@ -120,18 +174,21 @@ def main():
             player.rect.x = screen.get_width()-150
             direction_x -= moveframes
 
-        blit_layer(screen, Level1, 'Water', (direction_x, direction_y), (-600,0))
-        blit_layer(screen, Level1, 'Water2', (direction_x, direction_y), (-600,0))
-        blit_layer(screen, Level1, 'Sand', (direction_x, direction_y), (-600,0))
-        blit_layer(screen, Level1, 'Terrain', (direction_x, direction_y), (-600,0))
-        blit_layer(screen, Level1, 'Landscape', (direction_x, direction_y), (-600,0))
+        # blit_layer(screen, Level1, 'Water', (direction_x, direction_y), (-600,0))
+        # blit_layer(screen, Level1, 'Water2', (direction_x, direction_y), (-600,0))
+        # blit_layer(screen, Level1, 'Sand', (direction_x, direction_y), (-600,0))
+        # blit_layer(screen, Level1, 'Terrain', (direction_x, direction_y), (-600,0))
+        # blit_layer(screen, Level1, 'Landscape', (direction_x, direction_y), (-600,0))
         
 
-        Level1_group.draw(screen)
+        # Level1_group.draw(screen)
 
         all_sprites.draw(screen)
-        
-        # maps.render_layers(screen,'water')
+
+
+        # for collision_rect in collisions:
+        #     if player.rect.colliderect(collision_rect):
+        #         print("collision")
 
         screen.blit(points_image, (50, 10))
         screen.blit(health_image, (50, 30))
@@ -139,6 +196,8 @@ def main():
         pygame.display.update()
         
         clock.tick(fps)
+
+
 if __name__ == "__main__":
     main()
     pygame.quit()  # Quit the game
