@@ -1,8 +1,13 @@
 import pygame
+from messenger import Messenger
+
+# necessary libs for rabbitmq
+from comms import CommsListener
+from comms import CommsSender
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, sprite_sheet_path, sprite_width, sprite_height, x, y):
-        super().__init__()
+    def __init__(self, sprite_sheet_path, sprite_width, sprite_height, x, y, **kwargs):
+        
         
         # Load the sprite sheet image and set up the player's initial sprite
         self.sprite_sheet = pygame.image.load(sprite_sheet_path).convert_alpha()
@@ -23,7 +28,32 @@ class Player(pygame.sprite.Sprite):
         
         # Set up movement variables
         self.speed = 1
-    
+
+        self.creds = kwargs.get("creds", None)
+        self.callback = kwargs.get("callback", None)
+        self.id = kwargs.get("id", None)
+
+        if self.creds is not None:
+            self.messenger = Messenger(self.creds, self.callback)
+        self.lastBroadcast = pygame.time.get_ticks()
+        self.broadCastDelay = 0
+
+        super().__init__()
+
+    def timeToBroadCast(self):
+        """check to see if there was enough delay to broadcast again"""
+        return pygame.time.get_ticks() - self.lastBroadcast > self.broadCastDelay
+
+    def broadcastData(self, data):
+        if self.timeToBroadCast():
+            self.messenger.send(
+                target="broadcast", sender=self.id, player=self.id, data=data
+            )
+            self.lastBroadcast = pygame.time.get_ticks()
+            return True
+
+        return False
+
     def get_sprite(self, x, y):
         """Get a single sprite image from the sprite sheet."""
         sprite = pygame.Surface((32, 32), pygame.SRCALPHA)
@@ -60,3 +90,30 @@ class Player(pygame.sprite.Sprite):
     def draw(self, surface):
         """Draw the player's sprite to a Pygame surface."""
         surface.blit(self.image, self.rect)
+
+    def sendData(self):
+        self.broadcastData(
+            {
+                "pos": (self.position.x, self.position.y),
+                "vel": (self.velocity[0], self.velocity[1]),
+                "dir": (self.direction.x, self.direction.y),
+                "shoot": False,
+                "damage": self.damage,
+                "destroyed": self.destroyed,
+                "ship":self.ship,
+                "bullet":self.bullet,
+                "kills":self.kills
+            }
+        )
+
+    def sendShoot(self):
+        self.broadcastData(
+            {
+                "pos": (self.position.x, self.position.y),
+                "vel": (self.velocity[0], self.velocity[1]),
+                "dir": (self.direction.x, self.direction.y),
+                "shoot": True,
+                "damage": self.damage,
+                "destroyed": self.destroyed
+            }
+        )

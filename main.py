@@ -28,7 +28,6 @@ def main():
     screen = pygame.display.set_mode((800, 600))
     clock = pygame.time.Clock()
     fps = 60
-    # moveframes = 64
     moveframes = 1
     pygame.display.set_caption("Desert Island")
 
@@ -40,9 +39,9 @@ def main():
     green = (0, 255, 0)
 
     Level1 = load_pygame('DesertIsland.tmx')
-    Level1_group = pygame.sprite.Group()
+    # Level1_group = pygame.sprite.Group()
 
-    sprite_sheet_path = f'sprites/Player{random.randrange(1, 7, 1)}.png'
+    sprite_sheet_path = f'sprites/Player{random.randrange(1, 10, 1)}.png'
     sprite_width = 32
     sprite_height = 32
     x = 400
@@ -51,7 +50,7 @@ def main():
     player = Player(sprite_sheet_path, sprite_width, sprite_height, x, y)
 
     players = pygame.image.load(f'sprites/Player{random.randrange(1, 7, 1)}.png').convert_alpha()
-    player_group = pygame.sprite.Group()
+    # player_group = pygame.sprite.Group()
     #print(tmx_data.layers) # Print all layers
 
     # Get tiles for all layers
@@ -62,17 +61,6 @@ def main():
 
     direction_x = 0
     direction_y = 0
-
-    player_1_sheet = spritesheet.SpriteSheet(players)
-    
-    player_animation = []
-    player_animation_steps = 0
-    action = 0
-    # player = 0
-    last_update = pygame.time.get_ticks()
-    player_animation_speed = 75
-    player_frame = 0
-    step_counter = 0
 
     # Get tiles for a specific layer - Floor
     # Sand = tmx_data.get_layer_by_name('Sand')
@@ -86,15 +74,17 @@ def main():
 
     collisions = []
     # for layer in Level1.get_layer_by_name('Water2'):
-    for x, y, surf in Water2.tiles():
-        # tile_properties = layer.get_tile_properties_by_gid(gid)
-        # rect = pygame.Rect(x * Water2.width, y * Water2.height,
-        #                         Water2.width, Water2.height)
+    for x, y, gid in Water2.tiles():
+        tile_properties = Level1.get_tile_properties_by_gid(gid)
+        if tile_properties and tile_properties.get("collision"):
+            rect = pygame.Rect(x *  Level1.tilewidth, y *  Level1.tileheight,
+                                Level1.tilewidth,  Level1.tileheight)
+            collisions.append(rect)
         # print(rect)
         # pygame.draw.rect(surf, (255, 0, 0), rect)
-
+        # pass
         #This is all wrong
-        print(Water2.properties)
+        # print(Water2.properties[1])
         # collisions.append(pygame.Rect(x * Water2.tilewidth, y * Water2.tileheight,
                             #    Water2.tilewidth, Water2.tileheight))
 
@@ -138,9 +128,9 @@ def main():
         for collision_rect in collisions:
             # if player.rect.top > collision_rect.bottom:
             #     player.rect.y += 10
-            print(collision_rect.left)
-            rectangle1 = pygame.Rect(10, 30, 50, 70)
-            pygame.draw.rect(screen, red, collision_rect)
+            print(collision_rect)
+            # rectangle1 = pygame.Rect(10, 30, 50, 70)
+            # pygame.draw.rect(screen, red, collision_rect)
 
 
         current_time = pygame.time.get_ticks()
@@ -159,6 +149,15 @@ def main():
         #         if player.rect.bottom > collision_object.rect.top and player.rect.top < collision_object.rect.top:
         #             player.rect.top = collision_object.rect.bottom
 
+        # for x, y, data in Water2.tiles():
+        #     print(data)
+            # pos = (x * 32, y * 32)
+            # if player.rect.right > pos[0]:
+            #     player.rect.left =pos[0]
+
+            # if player.rect.bottom > pos[1]:
+            #     player.rect.top =pos[1]
+
 
         # Keep player within screen limits
         if player.rect.y < 150: 
@@ -174,11 +173,11 @@ def main():
             player.rect.x = screen.get_width()-150
             direction_x -= moveframes
 
-        # blit_layer(screen, Level1, 'Water', (direction_x, direction_y), (-600,0))
-        # blit_layer(screen, Level1, 'Water2', (direction_x, direction_y), (-600,0))
-        # blit_layer(screen, Level1, 'Sand', (direction_x, direction_y), (-600,0))
-        # blit_layer(screen, Level1, 'Terrain', (direction_x, direction_y), (-600,0))
-        # blit_layer(screen, Level1, 'Landscape', (direction_x, direction_y), (-600,0))
+        blit_layer(screen, Level1, 'Water', (direction_x, direction_y), (-600,0))
+        blit_layer(screen, Level1, 'Water2', (direction_x, direction_y), (-600,0))
+        blit_layer(screen, Level1, 'Sand', (direction_x, direction_y), (-600,0))
+        blit_layer(screen, Level1, 'Terrain', (direction_x, direction_y), (-600,0))
+        blit_layer(screen, Level1, 'Landscape', (direction_x, direction_y), (-600,0))
         
 
         # Level1_group.draw(screen)
