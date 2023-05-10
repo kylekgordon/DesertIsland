@@ -2,6 +2,7 @@ import pygame
 import math
 import os
 import random
+import copy
 
 from messenger import Messenger
 from pygame.math import Vector2
@@ -30,6 +31,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = position[0]
         self.rect.y = position[1]
+        self.global_coordinates = [copy.deepcopy(self.rect.x), copy.deepcopy(self.rect.y)]
         self.health = 100
         self.points = 0
         self.playernum = playernum
@@ -83,44 +85,65 @@ class Player(pygame.sprite.Sprite):
             self.current_sprite_x = (self.current_sprite_x + 1) % 3
             self.image = self.get_sprite(self.current_sprite_x, self.current_sprite_y)
     
-    def update(self, keys):
+    def update(self, keys, screen_pos):
         """Update the player's position based on user input."""
         if keys[pygame.K_LEFT]:
             self.current_sprite_y = 1
             self.direc = Vector2(-1,0)
             self.rect.x -= self.speed
+            self.global_coordinates[0] = -screen_pos[0] + self.rect.x
+            self.global_coordinates[1] = -screen_pos[1] + self.rect.y
             self.sendData()
             self.animate()
         if keys[pygame.K_RIGHT]:
             self.current_sprite_y = 2
             self.direc = Vector2(1,0)
             self.rect.x += self.speed
+            self.global_coordinates[0] = -screen_pos[0] + self.rect.x
+            self.global_coordinates[1] = -screen_pos[1] + self.rect.y
             self.sendData()
             self.animate()
         if keys[pygame.K_UP]:
             self.current_sprite_y = 3
             self.direc = Vector2(0,-1)
             self.rect.y -= self.speed
+            self.global_coordinates[0] = -screen_pos[0] + self.rect.x
+            self.global_coordinates[1] = -screen_pos[1] + self.rect.y
+            # print(self.global_coordinates)
             self.sendData()
             self.animate()
         if keys[pygame.K_DOWN]:
             self.current_sprite_y = 0
             self.direc = Vector2(0,1)
             self.rect.y += self.speed
+            self.global_coordinates[0] = -screen_pos[0] + self.rect.x
+            self.global_coordinates[1] = -screen_pos[1] + self.rect.y
             self.sendData()
             self.animate()
         if keys[pygame.K_SPACE]:
             self.attack()
             self.sendAttack()
     
-    def draw(self, surface):
-        """Draw the player's sprite to a Pygame surface."""
-        surface.blit(self.image, self.rect)
+    # enemy is a bool, if set to true then it will print out the enemy 
+    # where it needs to be with the other screen coords
+    def draw(self, surface, enemy, other_coords):
+        
+        print(enemy)
+
+        if enemy:
+            print("enemy true")
+            surface.blit(self.image, other_coords)
+            print(other_coords)
+        else:
+            """Draw the player's sprite to a Pygame surface."""
+            surface.blit(self.image, self.rect)
 
     def sendData(self):
         self.broadcastData(
             {
-                "pos": (self.rect.x, self.rect.y),
+                # "pos": (self.rect.x, self.rect.y),
+                "pos": (self.global_coordinates[0], self.global_coordinates[1]),
+                "screen coord": (self.global_coordinates[0]-self.rect.x, self.global_coordinates[1]-self.rect.y),
                 "sprite": (self.current_sprite_y),
                 "vel": (self.velocity[0], self.velocity[1]),
                 "dir": (self.direction, self.direction),

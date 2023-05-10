@@ -2,3 +2,4 @@ pygame
 rich 
 pika
 requests
+copy

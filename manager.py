@@ -22,20 +22,24 @@ class commsManager:
         self.players = {}
         self.localPlayer = None
         self.sprites = pygame.sprite.Group()
+        self.screen_coords = []
 
     def addPlayer(self, playernum, **kwargs):
         """Adds a player to the local game as dictated by incoming messages."""
         name = kwargs.get("name", None)
         player = kwargs.get("player", None)
         localPlayer = kwargs.get("localPlayer", False)
+        position = kwargs.get("pos", (400,300))
 
         # Instances of players are created in two ways:
         if localPlayer:
             self.localPlayer = player.id
             self.spaceShip = player
+            # self.screen_coords = kwargs.get("screen coord", None)
         else:
             # This is a mirror of another player somewhere else.
-            player = Player(playernum, self.create_bullet_callback,32, 32, (400, 300), id=name)
+            # player = Player(playernum, self.create_bullet_callback,32, 32, (400, 300), id=name)
+            player = Player(playernum, self.create_bullet_callback,32, 32, position, id=name)
             self.players[name] = player
 
     def update(self,screen):
@@ -52,7 +56,8 @@ class commsManager:
     def draw(self,screen):
         try:
             for id, player in self.players.items():
-                player.draw(screen)
+                player.draw(screen, True, (player.rect.x-self.screen_coords[0], player.rect.y-self.screen_coords[1]))
+                print((player.rect.x-self.screen_coords[0], player.rect.y-self.screen_coords[1]))
         except:
             pass
 
@@ -106,5 +111,6 @@ class commsManager:
                     self.players[sender].points = points
 
         else:
+            self.screen_coords = data.get("screen coord", None)
             # print("local player")
             pass
