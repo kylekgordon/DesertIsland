@@ -242,6 +242,11 @@ class DesertIsland:
             all_sprites.draw(self.screen)
             self.manager.draw(self.screen)
 
+            for bullet in self.bullets:
+                bullet.move(self.screen)
+                bullet.draw(self.screen)
+
+
             # for collision_rect in collisions:
             #     if player.rect.colliderect(collision_rect):
             #         print("collision")

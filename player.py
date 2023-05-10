@@ -34,6 +34,7 @@ class Player(pygame.sprite.Sprite):
         self.points = 0
         self.playernum = playernum
         self.bulletnum = 0
+        self.direc = Vector2(1,0)
         
         # Set up animation variables
         self.animation_timer = 0
@@ -86,21 +87,25 @@ class Player(pygame.sprite.Sprite):
         """Update the player's position based on user input."""
         if keys[pygame.K_LEFT]:
             self.current_sprite_y = 1
+            self.direc = Vector2(-1,0)
             self.rect.x -= self.speed
             self.sendData()
             self.animate()
         if keys[pygame.K_RIGHT]:
             self.current_sprite_y = 2
+            self.direc = Vector2(1,0)
             self.rect.x += self.speed
             self.sendData()
             self.animate()
         if keys[pygame.K_UP]:
             self.current_sprite_y = 3
+            self.direc = Vector2(0,-1)
             self.rect.y -= self.speed
             self.sendData()
             self.animate()
         if keys[pygame.K_DOWN]:
             self.current_sprite_y = 0
+            self.direc = Vector2(0,1)
             self.rect.y += self.speed
             self.sendData()
             self.animate()
@@ -140,24 +145,33 @@ class Player(pygame.sprite.Sprite):
         )
 
     def attack(self):
-        # angle = 10 #self.direction.angle_to(DOWN)
-        # bullet_velocity = self.direction * 10 + self.velocity
-        # bullets = Bullet((self.rect.x,self.rect.y), bullet_velocity, self.id, angle, "player")
-        # self.create_bullet_callback(bullets)
-        pass
+        angle = 0  # update this as needed
+        bullet_velocity = self.direc * 10  # Bullet speed is 10 units/frame
+        bullet = Bullet((self.rect.x, self.rect.y), bullet_velocity, self.id, angle, "player")
+        self.create_bullet_callback(bullet)
+
 
 bullet = random.randrange(10, 66, 1)
 
 class Bullet(GameObject):
     def __init__(self, position, velocity, id, angle, belongTo):
         
-        super().__init__(position, load_sprite(f"Bullets/{bullet}"), velocity)
+        super().__init__(position, load_sprite(f"/Bullets/{bullet}"), velocity)
         #self.sprite = pygame.transform.scale(self.sprite, (30, 30))
-        self.sprite = pygame.transform.rotozoom(self.sprite, angle, 0.3)
+        #adjust the angle for the sprite
+        angle2 = math.degrees(math.atan2(-velocity.y, velocity.x)) + 90
+        self.sprite = pygame.transform.rotozoom(self.sprite, angle2, 0.3)
+        if self.sprite.get_size() == (0, 0):
+            print(f"Error: sprite 'Bullets/{bullet}.png' is empty or not valid")
         self.radius = self.sprite.get_width() / 2
         self.id = id
         self.belongTo = belongTo
         
     def move(self, surface):
         self.position = self.position + self.velocity
+
+    def draw(self, surface):
+    # """Draw the bullet's sprite to a Pygame surface."""
+        surface.blit(self.sprite, tuple(self.position))
+
         
