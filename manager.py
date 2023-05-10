@@ -13,17 +13,17 @@ import pygame.display
 # necessary libs for rabbitmq
 from comms import CommsListener
 from comms import CommsSender
-from models import Spaceship
+from player import Player
 
 
 class commsManager:
-    def __init__(self,create_bullet_callback):
+    def __init__(self,create_bullet_callback = None):
         self.create_bullet_callback = create_bullet_callback
         self.players = {}
         self.localPlayer = None
         self.sprites = pygame.sprite.Group()
 
-    def addPlayer(self, ship, bullet, **kwargs):
+    def addPlayer(self, playernum, **kwargs):
         """Adds a player to the local game as dictated by incoming messages."""
         name = kwargs.get("name", None)
         player = kwargs.get("player", None)
@@ -35,7 +35,7 @@ class commsManager:
             self.spaceShip = player
         else:
             # This is a mirror of another player somewhere else.
-            player = Spaceship((400,300),self.create_bullet_callback, ship, bullet, id=name)
+            player = Player(playernum , 32, 32, (400, 300), id=name)
             self.players[name] = player
 
     def update(self,screen):
@@ -43,9 +43,10 @@ class commsManager:
             player.move(screen)
 
         for id, player in self.players.items():
-            if player.destroyed:
-                self.players.pop(id)
-                break
+            # if player.destroyed:
+            #     self.players.pop(id)
+            #     break
+            pass
 
 
     def draw(self,screen):
@@ -64,12 +65,11 @@ class commsManager:
         xy = data.get("pos", None)
         vel = data.get("vel", None)
         dir = data.get("dir", None)
-        shoot = data.get("shoot", False)
-        damage = data.get("damage", None)
-        destroyed = data.get("destroyed", None)
-        kills = data.get("kills", None)
-        ship = data.get("ship", None)
-        bullet = data.get("bullet", None)
+        attack = data.get("attack", False)
+        health = data.get("health", None)
+        points = data.get("points", None)
+        playernum = data.get("player", None)
+        sprite = data.get("sprite", None)
 
 
         # if scoreTo is not None:
@@ -79,27 +79,31 @@ class commsManager:
         if self.localPlayer != sender:
             #print(f"not local: {sender} != {self.localPlayer}")
             if not sender in self.players:
-                self.addPlayer(ship, bullet, name=sender)
+                self.addPlayer(playernum, name=sender)
                 print(f"Players: {len(self.players)}")
             else:
                 if xy:
-                    self.players[sender].position.x = xy[0]
-                    self.players[sender].position.y = xy[1]
-                if vel:
-                    self.players[sender].velocity.x = vel[0]
-                    self.players[sender].velocity.y = vel[1]
-                if dir:
-                    self.players[sender].direction.x = dir[0]
-                    self.players[sender].direction.y = dir[1]
-                if shoot is True:
-                    self.players[sender].shoot()
-                if damage:
-                    self.players[sender].damage = damage
-                if destroyed:
-                    self.players[sender].destroyed = destroyed
+                    self.players[sender].rect.x = xy[0]
+                    self.players[sender].rect.y = xy[1]
 
-                if kills:
-                    self.players[sender].kills = kills
+                if sprite:
+                    self.players[sender].current_sprite_y = sprite
+                    self.players[sender].animate()
+                else:
+                    self.players[sender].current_sprite_y = 0
+                    self.players[sender].animate()
+                # if vel:
+                #     self.players[sender].velocity[0] = vel[0]
+                #     self.players[sender].velocity[1] = vel[1]
+                if dir:
+                    self.players[sender].direction = dir[0]
+                    self.players[sender].direction = dir[1]
+                if attack is True:
+                    self.players[sender].attack()
+                if health:
+                    self.players[sender].health = health
+                if points:
+                    self.players[sender].points = points
 
         else:
             # print("local player")
