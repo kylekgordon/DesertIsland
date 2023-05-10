@@ -16,6 +16,12 @@ from comms import CommsSender
 
 DOWN = Vector2(0, 1)
 
+class Weapon(pygame.sprite.Sprite):
+    def __init__(self, image, position):
+        super().__init__()
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.rect.topleft = position
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, playernum, create_bullet_callback, sprite_width, sprite_height, position, **kwargs):
@@ -37,7 +43,8 @@ class Player(pygame.sprite.Sprite):
         self.playernum = playernum
         self.bulletnum = 0
         self.direc = Vector2(1,0)
-        
+        self.bag_open = False
+        self.weapon_bag = []
         # Set up animation variables
         self.animation_timer = 0
         self.animation_delay = 1
@@ -123,7 +130,8 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_SPACE]:
             self.attack()
             self.sendAttack()
-    
+        if keys[pygame.K_b]:
+            self.toggle_bag()
     # enemy is a bool, if set to true then it will print out the enemy 
     # where it needs to be with the other screen coords
     def draw(self, surface, enemy, other_coords):
@@ -161,6 +169,7 @@ class Player(pygame.sprite.Sprite):
                 "pos": (self.rect.x, self.rect.y),
                 "vel": (self.velocity[0], self.velocity[1]),
                 "dir": (self.direction, self.direction),
+                # "direc": (self.direc[0], self.direc[1]),
                 "attack": True,
                 "damage": self.health,
                 "direction": self.direction
@@ -173,6 +182,12 @@ class Player(pygame.sprite.Sprite):
         bullet = Bullet((self.rect.x, self.rect.y), bullet_velocity, self.id, angle, "player")
         self.create_bullet_callback(bullet)
 
+    def toggle_bag(self):
+        self.bag_open = not self.bag_open
+
+    def add_weapon(self, weapon_image, weapon_position):
+        weapon = Weapon(weapon_image, weapon_position)
+        self.weapon_bag.append(weapon)
 
 bullet = random.randrange(10, 66, 1)
 

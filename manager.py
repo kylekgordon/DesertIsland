@@ -70,6 +70,7 @@ class commsManager:
         xy = data.get("pos", None)
         vel = data.get("vel", None)
         dir = data.get("dir", None)
+        # direc = data.get("direc", None)
         attack = data.get("attack", False)
         health = data.get("health", None)
         points = data.get("points", None)
@@ -103,6 +104,11 @@ class commsManager:
                 if dir:
                     self.players[sender].direction = dir[0]
                     self.players[sender].direction = dir[1]
+
+                # if direc:
+                #     self.players[sender].direc = direc[0]
+                #     self.players[sender].direc = direc[1]
+
                 if attack is True:
                     self.players[sender].attack()
                 if health:

@@ -58,6 +58,7 @@ class DesertIsland:
         self.clock = pygame.time.Clock()
         self.monsters = []
         self.bullets = []
+        self.weapon_bag = []
         self.spritenum = random.randrange(1, 10, 1)
         self.sprite_width = 32
         self.sprite_height = 32
@@ -101,6 +102,7 @@ class DesertIsland:
         
 
         Level1 = load_pygame('DesertIsland.tmx')
+        weapon_sheet = pygame.image.load("sprites/weapons.png")
         # Level1_group = pygame.sprite.Group()
 
         # sprite_sheet_path = f'sprites/Player{spritenum}.png'
@@ -156,7 +158,12 @@ class DesertIsland:
         #         height = properties['height']
         #         new_rect = pg.Rect(x, y, width, height)
         #         blockers.append(new_rect)
-            
+        
+        # Add weapons to the player's bag
+        weapon_icon_position = (150, 150)  # Replace with the desired position of the weapon icon
+        self.player.add_weapon(weapon_sheet.subsurface(pygame.Rect(0, 0, 32, 32)), weapon_icon_position)
+
+
         all_sprites = pygame.sprite.Group()
         all_sprites.add(self.player)
 
@@ -247,6 +254,11 @@ class DesertIsland:
                 bullet.draw(self.screen)
 
 
+                # Draw the weapons in the bag if it's open
+            if self.player.bag_open:
+                for weapon in self.player.weapon_bag:
+                    self.screen.blit(weapon.image, weapon.rect.topleft)
+                    
             # for collision_rect in collisions:
             #     if player.rect.colliderect(collision_rect):
             #         print("collision")
