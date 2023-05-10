@@ -35,7 +35,7 @@ class commsManager:
             self.spaceShip = player
         else:
             # This is a mirror of another player somewhere else.
-            player = Player(playernum , 32, 32, (400, 300), id=name)
+            player = Player(playernum, self.create_bullet_callback,32, 32, (400, 300), id=name)
             self.players[name] = player
 
     def update(self,screen):

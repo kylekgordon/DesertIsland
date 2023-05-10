@@ -1,16 +1,27 @@
 import pygame
-from messenger import Messenger
+import math
+import os
+import random
 
+from messenger import Messenger
+from pygame.math import Vector2
+from pygame import transform
+from utils import get_random_velocity, load_sound, load_sprite, wrap_position, distance
+from gameobject import GameObject
 # necessary libs for rabbitmq
+from threading import Thread
 from comms import CommsListener
 from comms import CommsSender
 
+DOWN = Vector2(0, 1)
+
+
 class Player(pygame.sprite.Sprite):
-    def __init__(self, spritenum, sprite_width, sprite_height, position, **kwargs):
+    def __init__(self, playernum, create_bullet_callback, sprite_width, sprite_height, position, **kwargs):
         
-        
+        self.create_bullet_callback = create_bullet_callback
         # Load the sprite sheet image and set up the player's initial sprite
-        self.sprite_sheet = pygame.image.load(f'sprites/Player{spritenum}.png').convert_alpha()
+        self.sprite_sheet = pygame.image.load(f'sprites/Player{playernum}.png').convert_alpha()
         self.current_sprite_x = 0
         self.current_sprite_y = 0
         self.image = self.get_sprite(self.current_sprite_x, self.current_sprite_y)
@@ -21,7 +32,8 @@ class Player(pygame.sprite.Sprite):
         self.rect.y = position[1]
         self.health = 100
         self.points = 0
-        self.player = spritenum
+        self.playernum = playernum
+        self.bulletnum = 0
         
         # Set up animation variables
         self.animation_timer = 0
@@ -92,6 +104,9 @@ class Player(pygame.sprite.Sprite):
             self.rect.y += self.speed
             self.sendData()
             self.animate()
+        if keys[pygame.K_SPACE]:
+            self.attack()
+            self.sendAttack()
     
     def draw(self, surface):
         """Draw the player's sprite to a Pygame surface."""
@@ -106,7 +121,7 @@ class Player(pygame.sprite.Sprite):
                 "dir": (self.direction, self.direction),
                 "attack": False,
                 "health": self.health,
-                "player":self.player,
+                "player":self.playernum,
                 "points":self.points,
                 "direction": self.direction
             }
@@ -123,3 +138,26 @@ class Player(pygame.sprite.Sprite):
                 "direction": self.direction
             }
         )
+
+    def attack(self):
+        # angle = 10 #self.direction.angle_to(DOWN)
+        # bullet_velocity = self.direction * 10 + self.velocity
+        # bullets = Bullet((self.rect.x,self.rect.y), bullet_velocity, self.id, angle, "player")
+        # self.create_bullet_callback(bullets)
+        pass
+
+bullet = random.randrange(10, 66, 1)
+
+class Bullet(GameObject):
+    def __init__(self, position, velocity, id, angle, belongTo):
+        
+        super().__init__(position, load_sprite(f"Bullets/{bullet}"), velocity)
+        #self.sprite = pygame.transform.scale(self.sprite, (30, 30))
+        self.sprite = pygame.transform.rotozoom(self.sprite, angle, 0.3)
+        self.radius = self.sprite.get_width() / 2
+        self.id = id
+        self.belongTo = belongTo
+        
+    def move(self, surface):
+        self.position = self.position + self.velocity
+        

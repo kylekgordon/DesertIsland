@@ -57,12 +57,13 @@ class DesertIsland:
         self.screen = pygame.display.set_mode((800, 600))
         self.clock = pygame.time.Clock()
         self.monsters = []
+        self.bullets = []
         self.spritenum = random.randrange(1, 10, 1)
         self.sprite_width = 32
         self.sprite_height = 32
         
-        self.manager = commsManager()
-        localPlayer = Player(self.spritenum , self.sprite_width, self.sprite_height, (400, 300), id=playerId, creds=creds, callback= self.manager.callBack)
+        self.manager = commsManager(self.bullets.append)
+        localPlayer = Player(self.spritenum , self.bullets.append, self.sprite_width, self.sprite_height, (400, 300), id=playerId, creds=creds, callback= self.manager.callBack)
         self.manager.addPlayer(None, player=localPlayer, localPlayer=True)
         self.player = localPlayer
         self.direction_x = 0
