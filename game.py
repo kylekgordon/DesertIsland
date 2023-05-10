@@ -175,7 +175,7 @@ class DesertIsland:
                 
             # Update player position and sprite
             keys = pygame.key.get_pressed()
-            self.player.update(keys)
+            self.player.update(keys, (self.direction_x, self.direction_y))
 
             # self.screen.fill(black)    
             # blit_all_layers(screen, Level1, (direction_x, direction_y), (-600,0))
