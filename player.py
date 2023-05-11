@@ -53,6 +53,7 @@ class Player(pygame.sprite.Sprite):
         # Set up movement variables
         self.speed = 1
         self.velocity = (0, 0)
+        self.bullet_velocity = Vector2
 
         self.creds = kwargs.get("creds", None)
         self.callback = kwargs.get("callback", None)

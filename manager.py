@@ -57,7 +57,7 @@ class commsManager:
         try:
             for id, player in self.players.items():
                 player.draw(screen, True, (player.rect.x-self.screen_coords[0], player.rect.y-self.screen_coords[1]))
-                print((player.rect.x-self.screen_coords[0], player.rect.y-self.screen_coords[1]))
+                # print((player.rect.x-self.screen_coords[0], player.rect.y-self.screen_coords[1]))
         except:
             pass
 
