@@ -22,10 +22,10 @@
         },
         "DesertIsland.tmx": {
             "scale": 1.5,
-            "selectedLayer": 0,
+            "selectedLayer": 6,
             "viewCenter": {
-                "x": 960,
-                "y": 959.6666666666665
+                "x": 423.33333333333337,
+                "y": 1013.6666666666665
             }
         },
         "beach-desert-2.tsx": {

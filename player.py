@@ -15,6 +15,7 @@ from comms import CommsListener
 from comms import CommsSender
 
 DOWN = Vector2(0, 1)
+bullet = random.randrange(10, 66, 1)
 
 class Weapon(pygame.sprite.Sprite):
     def __init__(self, image, position):
@@ -136,12 +137,12 @@ class Player(pygame.sprite.Sprite):
     # where it needs to be with the other screen coords
     def draw(self, surface, enemy, other_coords):
         
-        print(enemy)
+        # print(enemy)
 
         if enemy:
-            print("enemy true")
+            # print("enemy true")
             surface.blit(self.image, other_coords)
-            print(other_coords)
+            # print(other_coords)
         else:
             """Draw the player's sprite to a Pygame surface."""
             surface.blit(self.image, self.rect)
@@ -169,7 +170,7 @@ class Player(pygame.sprite.Sprite):
                 "pos": (self.rect.x, self.rect.y),
                 "vel": (self.velocity[0], self.velocity[1]),
                 "dir": (self.direction, self.direction),
-                # "direc": (self.direc[0], self.direc[1]),
+                "direc": (self.direc[0], self.direc[1]),
                 "attack": True,
                 "damage": self.health,
                 "direction": self.direction
@@ -189,7 +190,11 @@ class Player(pygame.sprite.Sprite):
         weapon = Weapon(weapon_image, weapon_position)
         self.weapon_bag.append(weapon)
 
-bullet = random.randrange(10, 66, 1)
+    def hit(self):
+        self.health += 10
+        if self.health >= 100:
+            self.health = 100
+            # self.explode()
 
 class Bullet(GameObject):
     def __init__(self, position, velocity, id, angle, belongTo):
