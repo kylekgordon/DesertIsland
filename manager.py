@@ -70,7 +70,7 @@ class commsManager:
         xy = data.get("pos", None)
         vel = data.get("vel", None)
         dir = data.get("dir", None)
-        # direc = data.get("direc", None)
+        direc = data.get("direc", None)
         attack = data.get("attack", False)
         health = data.get("health", None)
         points = data.get("points", None)
@@ -86,7 +86,7 @@ class commsManager:
             #print(f"not local: {sender} != {self.localPlayer}")
             if not sender in self.players:
                 self.addPlayer(playernum, name=sender)
-                print(f"Players: {len(self.players)}")
+                # print(f"Players: {len(self.players)}")
             else:
                 if xy:
                     self.players[sender].rect.x = xy[0]
@@ -105,9 +105,8 @@ class commsManager:
                     self.players[sender].direction = dir[0]
                     self.players[sender].direction = dir[1]
 
-                # if direc:
-                #     self.players[sender].direc = direc[0]
-                #     self.players[sender].direc = direc[1]
+                if direc:
+                    self.players[sender].direc = vector2(direc[0], direc[1])
 
                 if attack is True:
                     self.players[sender].attack()
