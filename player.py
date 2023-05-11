@@ -173,7 +173,6 @@ class Player(pygame.sprite.Sprite):
                 "screen coord": (self.global_coordinates[0]-self.rect.x, self.global_coordinates[1]-self.rect.y),
                 "sprite": (self.current_sprite_y),
                 "vel": (self.velocity[0], self.velocity[1]),
-                "dir": (self.direction, self.direction),
                 "direc": (self.direc[0], self.direc[1]),
                 "attack": True,
                 "health": self.health,
