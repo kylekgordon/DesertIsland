@@ -221,12 +221,13 @@ class DesertIsland:
 
                 # if player.rect.bottom > pos[1]:
                 #     player.rect.top =pos[1]
-            # for bullet in self.bullets[:]:
-            #     if bullet.collides_with(self.player) and bullet.id != self.player.id:
-            #         self.player.hit()
-            #         self.player.sendData()
-            #         self.bullets.remove(bullet)
-            #         break
+
+            for bullet in self.bullets[:]:
+                if bullet.collides_with(self.player) and bullet.id != self.player.id:
+                    self.player.hit()
+                    self.player.sendData()
+                    self.bullets.remove(bullet)
+                    break
 
             # Keep player within screen limits
             if self.player.rect.y < 150: 

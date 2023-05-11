@@ -33,11 +33,12 @@ class Player(pygame.sprite.Sprite):
         self.current_sprite_x = 0
         self.current_sprite_y = 0
         self.image = self.get_sprite(self.current_sprite_x, self.current_sprite_y)
-        
+        self.position = position
         # Set up the player's rect and initial position
         self.rect = self.image.get_rect()
         self.rect.x = position[0]
         self.rect.y = position[1]
+        self.radius = 32 / 2
         self.global_coordinates = [copy.deepcopy(self.rect.x), copy.deepcopy(self.rect.y)]
         self.health = 100
         self.points = 0

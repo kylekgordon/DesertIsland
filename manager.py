@@ -110,6 +110,7 @@ class commsManager:
 
                 if attack is True:
                     self.players[sender].attack()
+                    
                 if health:
                     self.players[sender].health = health
                 if points:
