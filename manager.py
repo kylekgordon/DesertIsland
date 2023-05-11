@@ -106,7 +106,7 @@ class commsManager:
                     self.players[sender].direction = dir[1]
 
                 if direc:
-                    self.players[sender].direc = vector2(direc[0], direc[1])
+                    self.players[sender].direc = Vector2(direc[0], direc[1])
 
                 if attack is True:
                     self.players[sender].attack()
