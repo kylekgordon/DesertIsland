@@ -131,6 +131,7 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_SPACE]:
             self.attack()
             self.sendAttack()
+            self.sendData()
         if keys[pygame.K_b]:
             self.toggle_bag()
     # enemy is a bool, if set to true then it will print out the enemy 
